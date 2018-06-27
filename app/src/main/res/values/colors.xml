@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#212121</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#FFFFFF</color>
+
+
+    <color name="errorBackground">#E22C33</color>
+    <color name="successBackground">#689F38</color>
+    <color name="white">#FFF</color>
+    <color name="black">#000</color>
+    <color name="textColor">#d4d4d6</color>
+    <color name="backgroundTintDark">#CC000000</color> <!-- 80% black -->
+    <color name="backgroundTint">#4D000000</color> <!-- 30% black -->
+    <color name="backgroundTintLighter">#26000000</color> <!-- 15% black -->
+    <color name="textSecondaryDisabledLight">#66ffffff</color> <!-- 40% white -->
+</resources>

@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">CycloRoute</string>
+    <string name="login_strava">Login to Strava</string>
+    <string name="google_maps_key">AIzaSyBjZno7Ean-U0NIC3QHdjpmFIwS2SHTFZ8</string>
+    <string name="select_activity">Select Activity</string>
+</resources>
