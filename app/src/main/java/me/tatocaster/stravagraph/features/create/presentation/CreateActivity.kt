@@ -69,6 +69,7 @@ class CreateActivity : BaseActivity(), CreateActivityContract.View {
         val polyList = decodePoly(stravaRecordedActivity.polyLine)
         paths.addAll(polyList)
         canvas.latLngs = paths
+        canvas.stravaActivity = stravaRecordedActivity
         canvas.invalidate()
     }
 

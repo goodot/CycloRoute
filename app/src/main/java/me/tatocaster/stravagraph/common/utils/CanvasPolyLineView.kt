@@ -5,6 +5,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import me.tatocaster.stravagraph.entity.LatLng
+import me.tatocaster.stravagraph.entity.StravaRecordedActivity
 import timber.log.Timber
 
 
@@ -113,6 +114,7 @@ class CanvasPolyLineView : View {
 
 
     var latLngs: MutableList<LatLng> = mutableListOf()
+    lateinit var stravaActivity: StravaRecordedActivity
 
     constructor(context: Context) : this(context, null)
 
@@ -187,5 +189,24 @@ class CanvasPolyLineView : View {
 
         //restore canvas
 //        canvas.restore()
+
+        drawActivitySummary(canvas)
+    }
+
+    private fun drawActivitySummary(canvas: Canvas) {
+        //Measure the view at the exact dimensions (otherwise the text won't center correctly)
+        val view = ActivitySummaryView(context)
+        view.setSummary(stravaActivity)
+
+        val widthSpec = View.MeasureSpec.makeMeasureSpec(500, View.MeasureSpec.EXACTLY)
+        val heightSpec = View.MeasureSpec.makeMeasureSpec(500, View.MeasureSpec.EXACTLY)
+        view.measure(widthSpec, heightSpec)
+        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+
+
+        //Translate the Canvas into position and draw it
+        canvas.save()
+        view.draw(canvas)
+        canvas.restore()
     }
 }
