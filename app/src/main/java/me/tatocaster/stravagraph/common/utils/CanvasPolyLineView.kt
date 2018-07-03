@@ -8,107 +8,19 @@ import me.tatocaster.stravagraph.entity.LatLng
 import me.tatocaster.stravagraph.entity.StravaRecordedActivity
 import timber.log.Timber
 
-
-/*
-class CanvasPolyLineView : SurfaceView, Runnable {
-    private lateinit var surfaceHolder: SurfaceHolder
-    private lateinit var drawingLine: Paint
-    private lateinit var path: Path
-    private lateinit var drawingCanvas: Canvas
-    var latLngs: ArrayList<HashMap<String, Float>> = arrayListOf()
-
-    @Volatile
-    private var isRunning = false
-
-    private lateinit var thread: Thread
-
-    constructor(context: Context) : this(context, null)
-
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-
-    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
-        init(context, attrs)
-    }
-
-    private fun init(context: Context, attrs: AttributeSet?) {
-        surfaceHolder = holder
-
-        setPaint()
-
-        drawingCanvas = Canvas()
-    }
-
-    fun pause() {
-        isRunning = false
-        while (true) {
-            try {
-                thread.join()
-                return
-            } catch (e: InterruptedException) {
-                // try again
-                Timber.d("destroy interrupted")
-            }
-
-        }
-    }
-
-    fun start() {
-        if (!isRunning) {
-            thread = Thread(this)
-            thread.start()
-            isRunning = true
-            Timber.d("started")
-        }
-    }
-
-    override fun run() {
-        var canvas: Canvas
-        while (isRunning) {
-            if (surfaceHolder.surface.isValid) {
-                try {
-                    canvas = surfaceHolder.lockCanvas()
-//                    drawCoordinates(canvas)
-                    canvas.drawLine(0f, 0f, 20f, 20f, drawingLine)
-                    canvas.drawLine(20f, 0f, 0f, 20f, drawingLine)
-                    surfaceHolder.unlockCanvasAndPost(canvas)
-                } catch (e: IllegalStateException) {
-                    Timber.e(e)
-                }
-            }
-        }
-    }
-
-
-    private fun setPaint() {
-        drawingLine = Paint()
-//        drawingLine.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OUT)
-        drawingLine.color = Color.BLUE
-        drawingLine.strokeWidth = 20f
-        drawingLine.style = Paint.Style.STROKE
-        drawingLine.strokeCap = Paint.Cap.ROUND
-        path = Path()
-    }
-
-    private fun drawCoordinates(canvas: Canvas) {
-        for (i in 1 until latLngs.size) {
-            canvas.drawLine(latLngs[i - 1]["lat"]!!, latLngs[i - 1]["lng"]!!, latLngs[i]["lat"]!!, latLngs[i]["lng"]!!, drawingLine)
-            println(latLngs[i])
-        }
-        pause()
-    }
-
-}*/
-
 class CanvasPolyLineView : View {
     private lateinit var paint: Paint
     private lateinit var activityStartPaint: Paint
     private lateinit var activityFinishPaint: Paint
     private lateinit var shapePath: Path
-
+    lateinit var finishDrawListener: CanvasDrawEvent
 
     var myCanvasBitmap: Bitmap? = null
+    var activityStatsBitmap: Bitmap? = null
 
     private lateinit var myCanvas: Canvas
+
+    private lateinit var activityStatsCanvas: Canvas
 
     private lateinit var identityMatrix: Matrix
 
@@ -127,8 +39,8 @@ class CanvasPolyLineView : View {
     private fun init() {
         paint = Paint()
         paint.isAntiAlias = true
-        paint.color = Color.BLUE
-        paint.strokeWidth = 5f
+        paint.color = Color.WHITE
+        paint.strokeWidth = 8f
         paint.style = Paint.Style.STROKE
         paint.strokeCap = Paint.Cap.ROUND
 
@@ -146,6 +58,10 @@ class CanvasPolyLineView : View {
         myCanvasBitmap = Bitmap.createBitmap(600, 600, Bitmap.Config.ARGB_8888)
         myCanvas = Canvas()
         myCanvas.setBitmap(myCanvasBitmap)
+
+        activityStatsBitmap = Bitmap.createBitmap(600, 600, Bitmap.Config.ARGB_8888)
+        activityStatsCanvas = Canvas()
+        activityStatsCanvas.setBitmap(activityStatsBitmap)
 
         identityMatrix = Matrix()
     }
@@ -186,14 +102,14 @@ class CanvasPolyLineView : View {
         myCanvas.drawPath(shapePath, paint)
 //        identityMatrix.postScale(1f, -1f, canvasMidPointX, canvasMidPointY)
         canvas.drawBitmap(myCanvasBitmap, identityMatrix, null)
-
         //restore canvas
 //        canvas.restore()
 
-        drawActivitySummary(canvas)
+        drawActivitySummary()
+        finishDrawListener.drawFinished()
     }
 
-    private fun drawActivitySummary(canvas: Canvas) {
+    private fun drawActivitySummary() {
         //Measure the view at the exact dimensions (otherwise the text won't center correctly)
         val view = ActivitySummaryView(context)
         view.setSummary(stravaActivity)
@@ -205,8 +121,13 @@ class CanvasPolyLineView : View {
 
 
         //Translate the Canvas into position and draw it
-        canvas.save()
-        view.draw(canvas)
-        canvas.restore()
+        activityStatsCanvas.save()
+        view.draw(activityStatsCanvas)
+        activityStatsCanvas.drawBitmap(activityStatsBitmap, identityMatrix, null)
+        activityStatsCanvas.restore()
+    }
+
+    interface CanvasDrawEvent {
+        fun drawFinished()
     }
 }

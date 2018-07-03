@@ -18,31 +18,42 @@
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:theme="@style/ThemeOverlay.AppCompat.Dark" />
 
-    <TextView
-        android:id="@+id/titleTextView"
+
+    <com.xiaopo.flying.sticker.StickerView
+        android:id="@+id/stickerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textColor"
-        android:textSize="18sp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toTopOf="@+id/finishEditing"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.65"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintWidth_default="percent">
+
+
+        <ImageView
+            android:id="@+id/bitmapImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/login_background" />
+    </com.xiaopo.flying.sticker.StickerView>
 
     <me.tatocaster.stravagraph.common.utils.CanvasPolyLineView
         android:id="@+id/canvasPolyLine"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toTopOf="@+id/finishEditing"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.65"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintWidth_default="percent" />
 
-    <Button
-        android:id="@+id/getBitmap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="put on image"
-        app:layout_constraintTop_toBottomOf="@+id/canvasPolyLine" />
 
     <Button
         android:id="@+id/finishEditing"
@@ -50,22 +61,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="finish"
-        app:layout_constraintLeft_toRightOf="@+id/getBitmap"
-        app:layout_constraintTop_toBottomOf="@+id/canvasPolyLine" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stickerView" />
 
-    <com.xiaopo.flying.sticker.StickerView
-        android:id="@+id/stickerView"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/chooseImage"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/getBitmap">
+        android:layout_marginTop="16dp"
+        android:text="choose image"
+        app:layout_constraintStart_toEndOf="@+id/finishEditing"
+        app:layout_constraintTop_toBottomOf="@+id/stickerView" />
 
-
-        <ImageView
-            android:id="@+id/bitmapImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:scaleType="fitCenter" />
-    </com.xiaopo.flying.sticker.StickerView>
 </android.support.constraint.ConstraintLayout>

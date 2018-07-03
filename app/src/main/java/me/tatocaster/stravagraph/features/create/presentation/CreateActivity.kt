@@ -1,10 +1,9 @@
 package me.tatocaster.stravagraph.features.create.presentation
 
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.widget.TextView
+import android.view.View
 import com.xiaopo.flying.sticker.DrawableSticker
 import kotlinx.android.synthetic.main.activity_create.*
 import me.tatocaster.stravagraph.R
@@ -17,7 +16,6 @@ import javax.inject.Inject
 
 class CreateActivity : BaseActivity(), CreateActivityContract.View {
     private lateinit var canvas: CanvasPolyLineView
-    private lateinit var activityTitleTextView: TextView
 
     @Inject
     lateinit var presenter: CreateActivityContract.Presenter
@@ -34,25 +32,26 @@ class CreateActivity : BaseActivity(), CreateActivityContract.View {
 
         stravaRecordedActivity = intent.extras?.getParcelable("strava_activity") as StravaRecordedActivity
 
-        canvas = canvasPolyLine as CanvasPolyLineView
-
-        activityTitleTextView = titleTextView as TextView
-
-
-        stickerView.setBackgroundColor(Color.WHITE)
-        stickerView.isLocked = false
-        stickerView.isConstrained = true
-
-        getBitmap.setOnClickListener {
-            val canvasBitmap = canvas.myCanvasBitmap
-
+        chooseImage.setOnClickListener {
             val demoImageBitmap = BitmapFactory.decodeResource(resources, R.drawable.login_background)
             bitmapImage.setImageBitmap(demoImageBitmap)
-
-            val sticker = DrawableSticker(BitmapDrawable(resources, canvasBitmap))
-
-            stickerView.addSticker(sticker)
         }
+
+        canvas = canvasPolyLine as CanvasPolyLineView
+        canvas.finishDrawListener = object : CanvasPolyLineView.CanvasDrawEvent {
+            override fun drawFinished() {
+                val canvasBitmap = canvas.myCanvasBitmap
+                canvas.visibility = View.GONE
+
+                val sticker = DrawableSticker(BitmapDrawable(resources, canvasBitmap))
+                stickerView.addSticker(sticker)
+
+                stickerView.addSticker(DrawableSticker(BitmapDrawable(resources, canvas.activityStatsBitmap)))
+            }
+        }
+
+        stickerView.isLocked = false
+        stickerView.isConstrained = true
 
         finishEditing.setOnClickListener {
             val file = FileUtil.getNewFile(this, "Sticker")
@@ -65,7 +64,6 @@ class CreateActivity : BaseActivity(), CreateActivityContract.View {
         }
 
         val paths = ArrayList<LatLng>()
-        activityTitleTextView.text = stravaRecordedActivity.name
         val polyList = decodePoly(stravaRecordedActivity.polyLine)
         paths.addAll(polyList)
         canvas.latLngs = paths
