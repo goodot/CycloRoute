@@ -1,16 +1,20 @@
 package me.tatocaster.stravagraph.features.create.presentation
 
-import android.graphics.BitmapFactory
+import android.app.Activity
+import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.View
-import com.xiaopo.flying.sticker.DrawableSticker
+import com.fxn.pix.Pix
+import com.xiaopo.flying.sticker.BitmapStickerIcon
 import kotlinx.android.synthetic.main.activity_create.*
+import me.tatocaster.stravagraph.CHOOSE_IMAGE_REQUEST_CODE
 import me.tatocaster.stravagraph.R
 import me.tatocaster.stravagraph.common.utils.*
 import me.tatocaster.stravagraph.entity.LatLng
 import me.tatocaster.stravagraph.entity.StravaRecordedActivity
 import me.tatocaster.stravagraph.features.base.BaseActivity
+import java.io.File
 import javax.inject.Inject
 
 
@@ -33,8 +37,8 @@ class CreateActivity : BaseActivity(), CreateActivityContract.View {
         stravaRecordedActivity = intent.extras?.getParcelable("strava_activity") as StravaRecordedActivity
 
         chooseImage.setOnClickListener {
-            val demoImageBitmap = BitmapFactory.decodeResource(resources, R.drawable.login_background)
-            bitmapImage.setImageBitmap(demoImageBitmap)
+            //            val demoImageBitmap = BitmapFactory.decodeResource(resources, R.drawable.login_background)
+            Pix.start(this, CHOOSE_IMAGE_REQUEST_CODE)
         }
 
         canvas = canvasPolyLine as CanvasPolyLineView
@@ -43,10 +47,8 @@ class CreateActivity : BaseActivity(), CreateActivityContract.View {
                 val canvasBitmap = canvas.myCanvasBitmap
                 canvas.visibility = View.GONE
 
-                val sticker = DrawableSticker(BitmapDrawable(resources, canvasBitmap))
-                stickerView.addSticker(sticker)
-
-                stickerView.addSticker(DrawableSticker(BitmapDrawable(resources, canvas.activityStatsBitmap)))
+                stickerView.addSticker(BitmapStickerIcon(BitmapDrawable(resources, canvasBitmap), BitmapStickerIcon.RIGHT_BOTOM))
+                stickerView.addSticker(BitmapStickerIcon(BitmapDrawable(resources, canvas.activityStatsBitmap), BitmapStickerIcon.LEFT_BOTTOM))
             }
         }
 
@@ -71,6 +73,13 @@ class CreateActivity : BaseActivity(), CreateActivityContract.View {
         canvas.invalidate()
     }
 
+    override fun onGetImageFile(file: File) {
+        val d = BitmapDrawable(resources, file.absolutePath).bitmap
+//                val scaled = com.fxn.utility.Utility.getScaledBitmap(512, com.fxn.utility.Utility.getExifCorrectedBitmap(f))
+//                val scaled = com.fxn.utility.Utility.getScaledBitmap(512, d)
+        bitmapImage.setImageBitmap(d)
+    }
+
     override fun showError(message: String) {
         showErrorAlert(this, "", message)
     }
@@ -78,5 +87,15 @@ class CreateActivity : BaseActivity(), CreateActivityContract.View {
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return super.onSupportNavigateUp()
+    }
+
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == CHOOSE_IMAGE_REQUEST_CODE) {
+            val returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+            if (returnValue.isNotEmpty()) {
+                presenter.onChooseImageResult(returnValue[0])
+            }
+        }
     }
 }

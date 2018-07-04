@@ -24,7 +24,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center"
-        android:background="@android:color/transparent"
         app:layout_constraintBottom_toTopOf="@+id/finishEditing"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.65"
@@ -36,7 +35,7 @@
         <ImageView
             android:id="@+id/bitmapImage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:scaleType="centerCrop"
             tools:src="@drawable/login_background" />
     </com.xiaopo.flying.sticker.StickerView>
