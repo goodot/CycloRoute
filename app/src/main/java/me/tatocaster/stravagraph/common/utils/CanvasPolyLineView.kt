@@ -10,8 +10,6 @@ import timber.log.Timber
 
 class CanvasPolyLineView : View {
     private lateinit var paint: Paint
-    private lateinit var activityStartPaint: Paint
-    private lateinit var activityFinishPaint: Paint
     private lateinit var shapePath: Path
     lateinit var finishDrawListener: CanvasDrawEvent
 
@@ -46,15 +44,6 @@ class CanvasPolyLineView : View {
 
         shapePath = Path()
 
-        activityStartPaint = Paint()
-        paint.isAntiAlias = true
-        activityStartPaint.color = Color.GREEN
-
-        activityFinishPaint = Paint()
-        paint.isAntiAlias = true
-        activityFinishPaint.color = Color.RED
-
-
         myCanvasBitmap = Bitmap.createBitmap(600, 600, Bitmap.Config.ARGB_8888)
         myCanvas = Canvas()
         myCanvas.setBitmap(myCanvasBitmap)
@@ -82,22 +71,20 @@ class CanvasPolyLineView : View {
             val finalX = (coordX * factor + canvasMidPointX).toFloat()
             val finalY = (coordY * factor + canvasMidPointY).toFloat()
 
-            if (i == 1)
-                canvas.drawCircle(finalX, finalY, 15f, activityStartPaint)
+            if (i == 1) {
+//                shapePath.addCircle(finalX, finalY, 13f, Path.Direction.CW)
+            }
 
             shapePath.lineTo(finalX, finalY)
 
-            /*if (i == latLngs.size - 1)
-                canvas.drawCircle(finalX, finalY, 15f, activityFinishPaint)*/
+//            if (i == latLngs.size - 1)
+//                shapePath.addCircle(finalX, finalY, 15f, Path.Direction.CW)
 
             Timber.d("coordinates: %s, %s", coordX * factor + canvasMidPointX,
                     coordY * factor + canvasMidPointY)
         }
 
 //        canvas.save()
-//        canvas.scale(1f, -1f, canvasMidPointX, canvasMidPointY)
-
-//        canvas.drawPath(shapePath, paint)
         myCanvas.scale(1f, -1f, canvasMidPointX, canvasMidPointY)
         myCanvas.drawPath(shapePath, paint)
 //        identityMatrix.postScale(1f, -1f, canvasMidPointX, canvasMidPointY)

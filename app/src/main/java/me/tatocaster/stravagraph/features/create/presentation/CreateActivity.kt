@@ -44,10 +44,9 @@ class CreateActivity : BaseActivity(), CreateActivityContract.View {
         canvas = canvasPolyLine as CanvasPolyLineView
         canvas.finishDrawListener = object : CanvasPolyLineView.CanvasDrawEvent {
             override fun drawFinished() {
-                val canvasBitmap = canvas.myCanvasBitmap
                 canvas.visibility = View.GONE
 
-                stickerView.addSticker(BitmapStickerIcon(BitmapDrawable(resources, canvasBitmap), BitmapStickerIcon.RIGHT_BOTOM))
+                stickerView.addSticker(BitmapStickerIcon(BitmapDrawable(resources, canvas.myCanvasBitmap), BitmapStickerIcon.RIGHT_BOTOM))
                 stickerView.addSticker(BitmapStickerIcon(BitmapDrawable(resources, canvas.activityStatsBitmap), BitmapStickerIcon.LEFT_BOTTOM))
             }
         }

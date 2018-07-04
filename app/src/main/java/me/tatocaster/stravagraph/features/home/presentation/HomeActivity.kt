@@ -28,9 +28,6 @@ class HomeActivity : BaseActivity(), HomeContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        presenter.getStravaActivities(PreferenceHelper.defaultPrefs(this)[STRAVA_ACCESS_TOKEN_KEY]!!)
-
-
         adapter = StravaActivitiesAdapter(this) {
             val bundle = Bundle().apply {
                 putParcelable("strava_activity", it)
@@ -47,6 +44,12 @@ class HomeActivity : BaseActivity(), HomeContract.View {
         activitiesRV.setHasFixedSize(true)
         activitiesRV.adapter = adapter
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        presenter.getStravaActivities(PreferenceHelper.defaultPrefs(this)[STRAVA_ACCESS_TOKEN_KEY]!!)
     }
 
     override fun showError(message: String) {
