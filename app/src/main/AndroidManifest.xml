@@ -19,6 +19,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".features.create.presentation.CreateActivity"
+            android:label="@string/select_image"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.sweetzpot.stravazpot.authenticaton.ui.StravaLoginActivity"

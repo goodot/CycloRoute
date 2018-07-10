@@ -24,7 +24,7 @@ class CreateActivity : BaseActivity(), CreateActivityContract.View {
     @Inject
     lateinit var presenter: CreateActivityContract.Presenter
 
-    private lateinit var stravaRecordedActivity: StravaRecordedActivity
+    private var stravaRecordedActivity: StravaRecordedActivity? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,7 @@ class CreateActivity : BaseActivity(), CreateActivityContract.View {
 
         stravaRecordedActivity = intent.extras?.getParcelable("strava_activity") as StravaRecordedActivity
 
-        chooseImage.setOnClickListener {
+        bitmapImage.setOnClickListener {
             //            val demoImageBitmap = BitmapFactory.decodeResource(resources, R.drawable.login_background)
             Pix.start(this, CHOOSE_IMAGE_REQUEST_CODE)
         }
@@ -64,12 +64,14 @@ class CreateActivity : BaseActivity(), CreateActivityContract.View {
             }
         }
 
-        val paths = ArrayList<LatLng>()
-        val polyList = decodePoly(stravaRecordedActivity.polyLine)
-        paths.addAll(polyList)
-        canvas.latLngs = paths
-        canvas.stravaActivity = stravaRecordedActivity
-        canvas.invalidate()
+        stravaRecordedActivity?.let {
+            val paths = ArrayList<LatLng>()
+            val polyList = decodePoly(it.polyLine)
+            paths.addAll(polyList)
+            canvas.latLngs = paths
+            canvas.stravaActivity = it
+            canvas.invalidate()
+        }
     }
 
     override fun onGetImageFile(file: File) {
@@ -88,12 +90,14 @@ class CreateActivity : BaseActivity(), CreateActivityContract.View {
         return super.onSupportNavigateUp()
     }
 
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == CHOOSE_IMAGE_REQUEST_CODE) {
-            val returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
-            if (returnValue.isNotEmpty()) {
-                presenter.onChooseImageResult(returnValue[0])
+            data?.let {
+                val returnValue = it.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+                if (returnValue.isNotEmpty()) {
+                    presenter.onChooseImageResult(returnValue[0])
+                }
             }
         }
     }

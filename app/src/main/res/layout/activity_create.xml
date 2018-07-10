@@ -29,6 +29,7 @@
         app:layout_constraintHeight_percent="0.65"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_default="percent">
 
 
@@ -37,6 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ic_add_black_24dp"
             tools:src="@drawable/login_background" />
     </com.xiaopo.flying.sticker.StickerView>
 
@@ -51,27 +53,38 @@
         app:layout_constraintHeight_percent="0.65"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_default="percent" />
 
 
-    <Button
+    <ImageButton
         android:id="@+id/finishEditing"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="16dp"
-        android:text="finish"
+        android:background="@color/colorPrimaryDark"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stickerView" />
+        app:layout_constraintTop_toBottomOf="@+id/stickerView"
+        app:srcCompat="@drawable/ic_done_white_24dp" />
 
-    <Button
+    <!--<ImageButton
         android:id="@+id/chooseImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="choose image"
-        app:layout_constraintStart_toEndOf="@+id/finishEditing"
-        app:layout_constraintTop_toBottomOf="@+id/stickerView" />
+        android:background="@color/colorPrimaryDark"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stickerView"
+        app:srcCompat="@drawable/ic_image_white_24dp" />-->
 
 </android.support.constraint.ConstraintLayout>
