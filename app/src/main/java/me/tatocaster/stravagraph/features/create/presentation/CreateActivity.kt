@@ -59,6 +59,7 @@ class CreateActivity : BaseActivity(), CreateActivityContract.View {
             if (file != null) {
                 stickerView.save(file)
                 showSuccessAlert(this, "saved in " + file.absolutePath)
+//                finish()
             } else {
                 showErrorAlert(this, "the file is null", "")
             }
