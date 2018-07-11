@@ -1,4 +1,6 @@
 # CycloRoute
+<img src="https://raw.githubusercontent.com/tatocaster/CycloRoute/master/art/launcher.png" alt="Launcher" width="32">
+
 
 
 <img src="https://raw.githubusercontent.com/tatocaster/CycloRoute/master/art/screen.png" alt="All in one" width="300">
