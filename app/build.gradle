@@ -17,11 +17,40 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
+
+    signingConfigs {
+        release {
+            // Load keystore
+            def keystorePropertiesFile = rootProject.file("keystore.properties")
+            def keystoreProperties = new Properties()
+            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+            storeFile file(keystoreProperties["App.signing"])
+            storePassword keystoreProperties["App.storePassword"]
+            keyAlias keystoreProperties["App.keyAlias"]
+            keyPassword keystoreProperties["App.keyPassword"]
+        }
+        debug {
+            // Load DEBUG keystore
+            def keystorePropertiesFile = rootProject.file("keystore.properties")
+            def keystoreProperties = new Properties()
+            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+            storeFile file('keystore/debug.keystore')
+        }
+    }
+
+
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             shrinkResources true
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.debug
+            minifyEnabled false
         }
     }
     sourceSets { main { res.srcDirs = ['src/main/res', 'src/main/res/drawable-nodpi'] } }
