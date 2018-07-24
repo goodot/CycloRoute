@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import com.fxn.pix.Pix
 import com.xiaopo.flying.sticker.BitmapStickerIcon
@@ -40,6 +41,9 @@ class CreateActivity : BaseActivity(), CreateActivityContract.View {
             //            val demoImageBitmap = BitmapFactory.decodeResource(resources, R.drawable.login_background)
             Pix.start(this, CHOOSE_IMAGE_REQUEST_CODE)
         }
+        chooseImage.setOnClickListener {
+            Pix.start(this, CHOOSE_IMAGE_REQUEST_CODE)
+        }
 
         canvas = canvasPolyLine as CanvasPolyLineView
         canvas.finishDrawListener = object : CanvasPolyLineView.CanvasDrawEvent {
@@ -59,6 +63,9 @@ class CreateActivity : BaseActivity(), CreateActivityContract.View {
             if (file != null) {
                 stickerView.save(file)
                 showSuccessAlert(this, "saved in " + file.absolutePath)
+                Handler().postDelayed({
+                    finish()
+                }, 1500)
 //                finish()
             } else {
                 showErrorAlert(this, "the file is null", "")

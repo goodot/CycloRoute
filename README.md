@@ -5,6 +5,9 @@
 
 <img src="https://raw.githubusercontent.com/tatocaster/CycloRoute/master/art/screen.png" alt="All in one" width="300">
 
+- Code still needs to be refactored.
+- More updates are on the way
+
 #License
 ```
 MIT License

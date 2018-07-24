@@ -38,7 +38,7 @@ class CanvasPolyLineView : View {
         paint = Paint()
         paint.isAntiAlias = true
         paint.color = Color.WHITE
-        paint.strokeWidth = 8f
+        paint.strokeWidth = 7f
         paint.style = Paint.Style.STROKE
         paint.strokeCap = Paint.Cap.ROUND
 
